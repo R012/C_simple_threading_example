@@ -5,14 +5,14 @@
 /*
     Explanation: this program will generate some
     number of threads, compute the square of their
-    index (which will be passed as a parameter) and
+    index (which is taken from a shared variable) and
     add it to a global tally. Finally, the global
     tally will be printed on the screen.
 
     As usual, because this is a trivial toy example, 
     there will be no input parsing. It would not be
     hard to implement by any means, but it would
-    detract slightly for the key point. 
+    detract slightly from the key take home points. 
 */
 // Macro definitions start here
 #define NTHREADS 15
