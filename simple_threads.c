@@ -77,9 +77,11 @@ int main(){
   // begin with that
   pthread_t threads[NTHREADS]; // This would demand a malloc if we don't know the size ahead of time
   
-  // We also need a long integer buffer to store thread exit codes in. We don't care for them, but it is
-  // needed, so we have to allocate it. This could be a larger memory allocation if we needed to store all results
-  long results[1]; // Since we are ignoring the results, allocate a single long worth of memory
+  // We also need a long integer buffer to store thread exit codes in.  
+  // This could be a larger memory allocation if we needed to store all results
+  // (e.g., long results[NTHREADS])
+  long results[1]; // Since we are ignoring the results, allocate a single long worth of memory just to show
+				   // how we would receive them if we were planning on using them.
   
   // Step 3: create threads. This is a simple for loop, though we need to do some pointer
   // manipulation.
@@ -92,7 +94,7 @@ int main(){
      	NULL	     // Pointer to the arguments (in this case, nothing)
      );
      // Pay close attention to how every argument is a pointer. This is important: threads share memory, and
-     // so can be coordinated using that shared RAM. This is also way we need access-control mechanisms
+     // so can be coordinated using that shared RAM. This is also why we need access-control mechanisms
      // to prevent race conditions (e.g., incosistent states when performing operations in parallel).
   }
   
@@ -102,8 +104,10 @@ int main(){
     // Normally, we would define our results buffer right around here, or just outside this loop,
     // then free it as soon as we are done.
     pthread_join(threads[i],	 // We will wait for each thread in order; if they finish early, it's no big deal 
-    		(void**)&results);// We need to pass a pointer to a pointer, untyped. that's void**
+    		(void**)&results);   // We need to pass a pointer to a pointer, untyped. that's void**
   }
+	// Although we are passing an actual pointer for results for completion's sake, NULL is perfectly
+	// acceptable if, and only if, we have no interest in keeping the results.
   
   // At this point, we can destroy any memory allocations we might have made using malloc
   // We avoided it this time, so we are perfectly safe
